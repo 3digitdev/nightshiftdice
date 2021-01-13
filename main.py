@@ -41,6 +41,7 @@ class DiceRollerClient(discord.Client):
 
 token = os.getenv("DISCORD_TOKEN")
 if not token:
-    raise Exception("ERROR:  MISSING 'DISCORD_TOKEN' ENV VARIABLE")
+    print("ERROR:  MISSING 'DISCORD_TOKEN' ENV VARIABLE")
+    exit(1)
 client = DiceRollerClient()
 client.run(token)
