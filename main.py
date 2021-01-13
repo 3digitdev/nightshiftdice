@@ -39,5 +39,8 @@ class DiceRollerClient(discord.Client):
             await message.channel.send(dice_class.roll())
 
 
+token = os.getenv("DISCORD_TOKEN")
+if not token:
+    raise Exception("ERROR:  MISSING 'DISCORD_TOKEN' ENV VARIABLE")
 client = DiceRollerClient()
-client.run(os.getenv("DISCORD_TOKEN"))
+client.run(token)
