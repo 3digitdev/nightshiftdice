@@ -9,8 +9,8 @@ from roll_classes.Vaesen import VaesenRoll
 HELP_MSG = """
 **Use various '/' commands to roll dice!**
 - `/roll <dice>`   To roll normal polyhedral dice.           Example:  `/roll 1d12+2d6+6`
-- `/mb #`                   To roll dice for the Mistborn RPG.     Example:  `/mb 6` will roll 6 dice and calculate the results.
-- `/v #`                     To roll dice for the Vaesen RPG.        Example:  `/v 5` will roll 5 dice and give you the successes.
+- `/mb #`                   To roll dice for the Mistborn RPG.     Example:  `/mb 6` will roll 6 dice and calculate the results
+- `/v #`                     To roll dice for the Vaesen RPG.        Example:  `/v 5` will roll 5 dice and give you the successes
 """
 
 ROLL_CLASSES = [
