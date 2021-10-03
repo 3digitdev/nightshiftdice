@@ -15,7 +15,7 @@ class VaesenRoll(RollClass):
     def roll(self) -> str:
         self.pool = int(self.dice_str)
         if self.pool == 66:
-            self.result = randint(1, 66)
+            self.result = f"{randint(1,6)}{randint(1,6)}"
             return f"Rolling 1d66:  **`{self.result}`**"
         self.rolls = sorted([randint(1, 6) for _ in range(self.pool)], reverse=True)
         self.successes = self.rolls.count(6)
