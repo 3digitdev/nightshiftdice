@@ -41,5 +41,5 @@ class PolyDice(RollClass):
             return f"""
 Rolling `{self.dice_str}`:
 ```{self.results}{(' + ' + str(sum(mods))) if mods else ''}```
-**Result:  `{sum(self.results) + sum(mods)}**`
+**Result:  `{sum(self.results) + sum(mods)}`**
 """
