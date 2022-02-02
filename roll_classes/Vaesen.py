@@ -45,7 +45,7 @@ class VaesenRoll(RollClass):
         /v #                Rolls # dice pool and calculates results
         /v 66               Rolls a "d66" according to Vaesen logic
         """
-        if self.dice_str == "help":
+        if self.dice_str == " help":
             return """**Vaesen RPG Controls**
 ```/v start[ #]            Starts initiative -- opt. provide # enemies
 /v show                 Show initiatives
@@ -53,7 +53,7 @@ class VaesenRoll(RollClass):
 /v swap [name], [name]  Swap two initiatives by name
 /v #                    Roll # dice and calculate successes
 /v 66                   Roll a d66 by Vaesen's logic```"""
-        if re.match(r"start( \d+)?", self.dice_str):
+        if re.match(r"^ start( \d+)?$", self.dice_str):
             # Start initiative
             parts = self.dice_str.strip(" ").split(" ")
             enemies = int(parts[1]) if len(parts) > 1 else 1
@@ -67,14 +67,14 @@ class VaesenRoll(RollClass):
             ))
             self.write_inits_to_file()
             return self.show_inits()
-        if self.dice_str == "show":
+        if self.dice_str == " show":
             return self.show_inits()
-        if self.dice_str == "end":
+        if self.dice_str == " end":
             if not os.path.exists("inits.json"):
                 return NO_COMBAT
             os.remove("inits.json")
             return f"Combat **ended**!"
-        swap_match = re.match(r"^swap\s+(?P<one>[^,]*)\s*,\s*(?P<two>.*)\s*$", self.dice_str)
+        swap_match = re.match(r"^ swap\s+(?P<one>[^,]*)\s*,\s*(?P<two>.*)\s*$", self.dice_str)
         if swap_match:
             if not self.read_inits_from_file():
                 return NO_COMBAT
