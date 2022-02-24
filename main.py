@@ -19,7 +19,10 @@ ROLL_CLASSES = [
     MistbornRoll,
     PolyDice,
     VaesenRoll,
-    CoffeeRoll
+    CoffeeRoll,
+]
+ALLOWED_CHANNEL_IDS = [
+    591462371323805748,
 ]
 
 
@@ -51,7 +54,10 @@ class DiceRollerClient(discord.Client):
             return
         dice_class = get_dice_class(message.content)
         if dice_class:
-            if dice_class.__class__ == CoffeeRoll:
+            # Only roll in #game-room
+            if message.channel.id not in ALLOWED_CHANNEL_IDS:
+                await message.channel.send(":eyes: _stares at channel name disapprovingly_")
+            elif dice_class.__class__ == CoffeeRoll:
                 await message.author.send(dice_class.roll())
             else:
                 await message.channel.send(dice_class.roll())
