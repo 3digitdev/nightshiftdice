@@ -1,9 +1,11 @@
-FROM python:3.8.7-slim
+FROM python:3.9.12-slim
 
+RUN pip install poetry~=1.1.12
 RUN mkdir dicebot
 WORKDIR dicebot
-COPY main.py requirements.txt ./
-COPY roll_classes/ ./roll_classes
-RUN python3 -m pip install -r requirements.txt
+COPY src/ ./src
+COPY pyproject.toml ./
+COPY poetry.lock ./
+RUN poetry install
 
-ENTRYPOINT ["python3", "main.py"]
+ENTRYPOINT ["poetry", "run", "bot"]

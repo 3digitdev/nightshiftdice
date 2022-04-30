@@ -2,7 +2,7 @@ import collections
 from random import randint, shuffle
 from typing import List
 
-from roll_classes.RollClass import RollClass
+from .RollClass import RollClass
 
 
 explain = {

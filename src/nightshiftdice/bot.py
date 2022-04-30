@@ -2,10 +2,11 @@ import discord
 import re
 import os
 
-from roll_classes.PolyDice import PolyDice
-from roll_classes.Mistborn import MistbornRoll
-from roll_classes.Vaesen import VaesenRoll
-from roll_classes.Coffee import CoffeeRoll
+from .roll_classes.PolyDice import PolyDice
+from .roll_classes.Mistborn import MistbornRoll
+from .roll_classes.Vaesen import VaesenRoll
+from .roll_classes.Coffee import CoffeeRoll
+from .roll_classes.Corvid import CorvidRoll
 
 HELP_MSG = """
 **Use various '/' commands to roll dice!**
@@ -13,6 +14,7 @@ HELP_MSG = """
 - `/mb #`                   To roll dice for the Mistborn RPG.     Example:  `/mb 6` will roll 6 dice and calculate the results
 - `/v #`                     To roll dice for the Vaesen RPG.        Example:  `/v 5` will roll 5 dice and give you the successes
 - `/cd`                       To draw a card for Coffee Detective
+- `/c #`                     To roll dice for the Corvid Ct RPG.     Example:  `/c 3` will roll 3 dice and tell you the best result
 """
 
 ROLL_CLASSES = [
@@ -20,9 +22,11 @@ ROLL_CLASSES = [
     PolyDice,
     VaesenRoll,
     CoffeeRoll,
+    CorvidRoll,
 ]
 ALLOWED_CHANNEL_IDS = [
     591462371323805748,  # game-room
+    798588526861484033,  # bot-pen
 ]
 
 
@@ -62,9 +66,14 @@ class DiceRollerClient(discord.Client):
                 await message.channel.send(dice_class.roll())
 
 
-token = os.getenv("DISCORD_TOKEN")
-if not token:
-    print("ERROR:  MISSING 'DISCORD_TOKEN' ENV VARIABLE")
-    exit(1)
-client = DiceRollerClient()
-client.run(token)
+def main():
+    token = os.getenv("DISCORD_TOKEN")
+    if not token:
+        print("ERROR:  MISSING 'DISCORD_TOKEN' ENV VARIABLE")
+        exit(1)
+    client = DiceRollerClient()
+    client.run(token)
+
+
+if __name__ == "__main__":
+    main()

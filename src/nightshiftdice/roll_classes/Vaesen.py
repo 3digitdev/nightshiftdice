@@ -5,7 +5,7 @@ import re
 from random import randint, shuffle
 from typing import List, Dict
 
-from roll_classes.RollClass import RollClass
+from .RollClass import RollClass
 
 NO_COMBAT = "**`ERROR:  There is no active combat`**"
 
@@ -57,7 +57,7 @@ class VaesenRoll(RollClass):
             # Start initiative
             parts = self.dice_str.strip(" ").split(" ")
             enemies = int(parts[1]) if len(parts) > 1 else 1
-            names = ["Astrid", "Leif", "Rina", "Torsten", *[f"Enemy Group {k}" for k in range(enemies)]]
+            names = ["Astrid", "Wilhelm", "Rina", "Torsten", *[f"Enemy Group {k+1}" for k in range(enemies)]]
             shuffle(names)
             numbers = list(range(1, 11))
             shuffle(numbers)

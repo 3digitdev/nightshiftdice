@@ -2,7 +2,7 @@ import collections
 from random import randint
 from typing import List
 
-from roll_classes.RollClass import RollClass
+from .RollClass import RollClass
 
 
 class MistbornRoll(RollClass):
