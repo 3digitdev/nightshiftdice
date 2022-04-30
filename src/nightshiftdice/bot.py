@@ -1,49 +1,46 @@
 import discord
-import re
 import os
+import re
 
-from .roll_classes.PolyDice import PolyDice
-from .roll_classes.Mistborn import MistbornRoll
-from .roll_classes.Vaesen import VaesenRoll
-from .roll_classes.Coffee import CoffeeRoll
-from .roll_classes.Corvid import CorvidRoll
+from typing import Optional
+
+from .roll_classes import RollClass, CoffeeDetective
 
 HELP_MSG = """
 **Use various '/' commands to roll dice!**
-- `/roll <dice>`   To roll normal polyhedral dice.           Example:  `/roll 1d12+2d6+6`
-- `/mb #`                   To roll dice for the Mistborn RPG.     Example:  `/mb 6` will roll 6 dice and calculate the results
-- `/v #`                     To roll dice for the Vaesen RPG.        Example:  `/v 5` will roll 5 dice and give you the successes
-- `/cd`                       To draw a card for Coffee Detective
-- `/c #`                     To roll dice for the Corvid Ct RPG.     Example:  `/c 3` will roll 3 dice and tell you the best result
+`/roll help`  For rolling normal polyhedral dice.
+**I also support multiple custom systems for dice rolling:**
+- `/cd help`  for Coffee Detective
+- `/cc help`  for Corvid Court
+- `/mb help`  for Mistborn
+- `/v help`    for Vaesen
 """
 
-ROLL_CLASSES = [
-    MistbornRoll,
-    PolyDice,
-    VaesenRoll,
-    CoffeeRoll,
-    CorvidRoll,
-]
+ROLL_CLASSES = RollClass.__subclasses__()
+# Restrict which channels people are allowed to invoke the dicebot in
 ALLOWED_CHANNEL_IDS = [
     591462371323805748,  # game-room
     798588526861484033,  # bot-pen
 ]
+# This is to allow certain roll classes to persist between commands,
+# in the case of tracking things like persistent state for initiative etc.
+CACHED_ROLL_CLASSES = {}
 
 
-cached = {}
-
-
-def get_dice_class(message: str):
+def get_dice_class(message: discord.Message) -> Optional[RollClass]:
+    """Retrieve the RollClass child that matches to the message, if any"""
     for rc in ROLL_CLASSES:
-        match = re.findall(f"^{rc.__roll_macro__}(.*)$", message)
+        match = re.findall(f"^{rc.__roll_macro__}\s+(.*)$", message.content)
         if match:
-            if rc.__name__ in cached:
-                c = cached[rc.__name__]
+            if rc.__name__ in CACHED_ROLL_CLASSES:
+                c = CACHED_ROLL_CLASSES[rc.__name__]
                 c.dice_str = match[0]
+                c.message = message
             else:
-                c = rc(match[0])
-                cached[rc.__name__] = c
+                c = rc(message, match[0])
+                CACHED_ROLL_CLASSES[rc.__name__] = c
             return c
+    return None
 
 
 class DiceRollerClient(discord.Client):
@@ -56,14 +53,12 @@ class DiceRollerClient(discord.Client):
         if str(self.user.id) in message.content and "help" in message.content.lower():
             await message.channel.send(HELP_MSG)
             return
-        dice_class = get_dice_class(message.content)
-        if dice_class:
-            if message.channel.id not in ALLOWED_CHANNEL_IDS:
-                await message.channel.send(":eyes: _stares at channel name disapprovingly_")
-            elif dice_class.__class__ == CoffeeRoll:
-                await message.author.send(dice_class.roll())
-            else:
-                await message.channel.send(dice_class.roll())
+        dice_class = get_dice_class(message)
+        if not dice_class:
+            return
+        if message.channel.id not in ALLOWED_CHANNEL_IDS:
+            await message.channel.send(":eyes: _stares at channel name disapprovingly_")
+        await dice_class.roll()
 
 
 def main():
@@ -73,7 +68,3 @@ def main():
         exit(1)
     client = DiceRollerClient()
     client.run(token)
-
-
-if __name__ == "__main__":
-    main()

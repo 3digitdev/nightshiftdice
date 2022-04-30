@@ -1,20 +1,21 @@
+__all__ = ["Mistborn"]
 import collections
+
 from random import randint
-from typing import List
 
-from .RollClass import RollClass
+from .roll_class import RollClass
 
 
-class MistbornRoll(RollClass):
+class Mistborn(RollClass):
     __roll_macro__ = "/mb"
 
     pool: int
     frequency: collections.Counter
-    rolls: List[int]
+    rolls: list[int]
     result: int
     nudges: int
 
-    def roll(self) -> str:
+    async def roll(self) -> None:
         extra = "\n"
         self.pool = int(self.dice_str)
         if self.pool > 10:
@@ -36,11 +37,11 @@ class MistbornRoll(RollClass):
             self.result = max([k for k in self.frequency.keys() if self.frequency[k] > 1])
         except ValueError:
             self.result = 0
-        return f"""{extra}
+        await self._say(f"""{extra}
 Rolling {self.pool} dice:
 ```Markdown
 {self.rolls}
 ```
 **Result:**  `{self.result}`
 **Nudges:**  `{self.nudges}`
-"""
+""")

@@ -1,38 +1,41 @@
+__all__ = ["CorvidCourt"]
 from random import randint
-from typing import List
 
-from .RollClass import RollClass
+from .roll_class import RollClass
 
 
 COUNTDOWN = [12, 10, 8, 6, 4]
 
 
-class CorvidRoll(RollClass):
-    __roll_macro__ = "/c"
+class CorvidCourt(RollClass):
+    __roll_macro__ = "/cc"
 
     pool: int
-    rolls: List[int]
+    rolls: list[int]
     best: int
     h_countdown: int
     c_countdown: int
 
-    def __init__(self, dice_str: str):
+    def __init__(self, dice_str: str) -> None:
         self.h_countdown = 0
         self.c_countdown = 2
         super().__init__(dice_str)
 
-
-    def roll(self) -> str:
+    async def roll(self) -> None:
         """
         /c #                Rolls # dice pool and calculates best result
         /c show             Shows countdown dice
         """
-        if self.dice_str == " help":
-            return """**Corvid Ct RPG Controls**
-```/c #     Roll # dice and calculate best result
-/c show  Show the countdown dice currently```"""
-        if self.dice_str == " show":
-            return f"**Countdown Dice:**\nHumans:  `d{COUNTDOWN[self.h_countdown]}`\nCorvids:  `d{COUNTDOWN[self.c_countdown]}`"
+        if self.dice_str == "help":
+            await self._say("""**Corvid Court RPG Controls**
+```
+/cc #     Roll # dice and calculate best result
+/cc show  Show the countdown dice currently
+```""")
+            return
+        if self.dice_str == "show":
+            await self._say(f"**Countdown Dice:**\nHumans:  `d{COUNTDOWN[self.h_countdown]}`\nCorvids:  `d{COUNTDOWN[self.c_countdown]}`")
+            return
         self.pool = int(self.dice_str)
         extra = ""
         if self.pool > 3:
@@ -74,4 +77,4 @@ class CorvidRoll(RollClass):
                 result += f"\n   (The corvid countdown moves forward 1 step to a d{COUNTDOWN[self.c_countdown]}!)"
             if self.c_countdown > 4:
                 result += "\n:bangbang: **The corvids have finished their countdown!** :bangbang:"
-        return f"{extra}Rolling {self.pool} Dice:  `{self.rolls}`\n**Best Result: `{self.best}`**\n{result}"
+        await self._say(f"{extra}Rolling {self.pool} Dice:  `{self.rolls}`\n**Best Result: `{self.best}`**\n{result}")
