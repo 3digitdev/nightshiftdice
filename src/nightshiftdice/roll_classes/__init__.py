@@ -4,3 +4,6 @@ from .mistborn import *
 from .poly_dice import *
 from .roll_class import *
 from .vaesen import *
+from .tiny_dungeons import *
+from .ryuutama import *
+from .hunter_the_vigil import *

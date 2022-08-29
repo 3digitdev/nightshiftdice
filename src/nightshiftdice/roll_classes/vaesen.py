@@ -47,7 +47,7 @@ class Vaesen(RollClass):
 /v #                    Roll # dice and calculate successes
 /v 66                   Roll a d66 by Vaesen's logic```""")
             return
-        if re.match(r"^ start( \d+)?$", self.dice_str):
+        if re.match(r"^start( \d+)?$", self.dice_str):
             # Start initiative
             parts = self.dice_str.strip(" ").split(" ")
             enemies = int(parts[1]) if len(parts) > 1 else 1
@@ -72,7 +72,7 @@ class Vaesen(RollClass):
             os.remove("inits.json")
             await self._say(f"Combat **ended**!")
             return
-        swap_match = re.match(r"^ swap\s+(?P<one>[^,]*)\s*,\s*(?P<two>.*)\s*$", self.dice_str)
+        swap_match = re.match(r"^swap\s+(?P<one>[^,]*)\s*,\s*(?P<two>.*)\s*$", self.dice_str)
         if swap_match:
             if not self.read_inits_from_file():
                 await self._say(NO_COMBAT)

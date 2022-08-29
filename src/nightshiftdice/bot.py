@@ -10,10 +10,13 @@ HELP_MSG = """
 **Use various '/' commands to roll dice!**
 `/roll help`  For rolling normal polyhedral dice.
 **I also support multiple custom systems for dice rolling:**
-- `/cd help`  for Coffee Detective
-- `/cc help`  for Corvid Court
-- `/mb help`  for Mistborn
-- `/v help`    for Vaesen
+- `/cd help`   for Coffee Detective
+- `/cc help`   for Corvid Court
+- `/mb help`   for Mistborn
+- `/v help`     for Vaesen
+- `/td help`   for Tiny Dungeons
+- `/ryu help` for Ryuutama
+- `/h help`     for Hunter: The Vigil
 """
 
 ROLL_CLASSES = RollClass.__subclasses__()
