@@ -20,9 +20,13 @@ Ping the bot + "help" for info
 
 ## Running the Bot
 
-Running the bot requires that you have a Discord API Token to provide.
+Running the bot requires several environment variables:
 
-This token must be supplied via env variable `DISCORD_TOKEN` (the bot will throw an error without it)
+- `DISCORD_TOKEN`:  The Discord Bot Token for your bot
+- `GPT_ORG`:  The organization ID for your OpenAI API Account
+- `GPT_KEY`:  The API Key for your OpenAI API Account
+
+The bot will throw an error if any of these have not been supplied.
 
 ### Locally
 
@@ -41,13 +45,13 @@ poetry run bot
 
 There is a `Dockerfile` ready to go for the bot already!
 
-If you have the `DISCORD_TOKEN` env variable already set locally, you can easily achieve this with:
+If you have the env variables already set locally, you can easily achieve this with:
 ```bash
 # Build the docker image
 docker build -t nightshiftdice .
-# Run the docker image, providing the token
-docker run -e DISCORD_TOKEN=$DISCORD_TOKEN nightshiftdice
+# Run the docker image, providing the required variables
+docker run -e DISCORD_TOKEN=$DISCORD_TOKEN -e GPT_ORG=$GPT_ORG -e GPT_KEY=$GPT_KEY nightshiftdice
 
-# ALTERNATE: Provide the token manually
-docker run -e DISCORD_TOKEN=<your_discord_token> nightshiftdice
+# ALTERNATE: Provide the variables manually
+docker run -e DISCORD_TOKEN=<your_discord_token> -e GPT_ORG=<org> -e GPT_KEY=<key> nightshiftdice
 ```
