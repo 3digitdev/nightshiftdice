@@ -10,6 +10,8 @@ bot = "nightshiftdice.bot:main"
 [tool.poetry.dependencies]
 python = "^3.9"
 "discord.py" = "1.6.0"
+openai = "^0.27.2"
+dacite = "^1.8.0"
 
 [tool.poetry.dev-dependencies]
 

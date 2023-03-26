@@ -1,6 +1,6 @@
 FROM python:3.9.12-slim
 
-RUN pip install poetry~=1.1.12
+RUN pip install poetry~=1.4.0
 RUN mkdir dicebot
 WORKDIR dicebot
 COPY src/ ./src

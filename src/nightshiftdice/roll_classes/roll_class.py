@@ -15,7 +15,7 @@ class RollClass:
 
     async def _say(self, msg: str) -> None:
         """Send the given message to the channel the both received a command from"""
-        await self.message.channel.send(msg)
+        await self.message.reply(msg)
 
     async def _dm(self, msg: str) -> None:
         """Send the given message to the person who sent the command"""

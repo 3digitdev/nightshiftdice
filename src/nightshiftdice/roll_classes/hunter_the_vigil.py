@@ -31,7 +31,7 @@ class HunterVigil(RollClass):
 /h #     Roll # dice and calculate total successes (10's explode)
 /h #!    Same as above, but 9's also explode
 /h #!!   Same as above, but 8's and 9's also explode
-/h 0     Roll a "Chance Die" (no exploding, 10 to succeed, 0 is VERY BAD)
+/h 0     Roll a "Chance Die" (no exploding, 10 to succeed, 1 is VERY BAD)
 ```""")
             return
         bang_count = self.dice_str.count('!')
@@ -50,7 +50,7 @@ class HunterVigil(RollClass):
             else:
                 extra = '**Failure**'
             await self._say(f""":game_die: **Rolling Chance Die!** :game_die:
-_(Chance die do not explode, only 10s are success, and 0 is dramatic failure)_
+_(Chance die do not explode, only 10s are success, and 1 is dramatic failure)_
 **Result: {result}**
 {extra}
 """)
