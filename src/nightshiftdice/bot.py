@@ -1,3 +1,5 @@
+import sys
+
 import discord
 import os
 import re
@@ -5,9 +7,14 @@ import logging
 
 from typing import Optional
 
+from .log import LogFormatter
 from .roll_classes import RollClass
 
-logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(name)s :: %(message)s')
+formatter = LogFormatter()
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(formatter)
+logging.root.addHandler(handler)
+logging.root.setLevel(logging.INFO)
 log = logging.getLogger()
 discord_logger = logging.getLogger('discord')
 discord_logger.setLevel(logging.ERROR)
@@ -41,7 +48,7 @@ CACHED_ROLL_CLASSES = {}
 def get_dice_class(message: discord.Message) -> Optional[RollClass]:
     """Retrieve the RollClass child that matches to the message, if any"""
     for rc in ROLL_CLASSES:
-        match = re.findall(f'^{rc.__roll_macro__}\s+(.*)$', message.content)
+        match = re.findall(rf'^{rc.__roll_macro__}\s+(.*)$', message.content)
         if match:
             if rc.__name__ in CACHED_ROLL_CLASSES:
                 c = CACHED_ROLL_CLASSES[rc.__name__]
