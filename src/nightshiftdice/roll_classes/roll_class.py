@@ -1,4 +1,4 @@
-__all__ = ["RollClass"]
+__all__ = ['RollClass']
 from discord import Message
 
 
@@ -11,7 +11,7 @@ class RollClass:
         self.message = message
         self.dice_str = dice_str
         if not self.__roll_macro__:
-            raise NotImplementedError("Every subclass must define a `__roll_macro__`")
+            raise NotImplementedError('Every subclass must define a `__roll_macro__`')
 
     async def _say(self, msg: str) -> None:
         """Send the given message to the channel the both received a command from"""

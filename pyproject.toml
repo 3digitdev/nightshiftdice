@@ -8,13 +8,29 @@ authors = ["Max Bussiere <max@3digit.dev>"]
 bot = "nightshiftdice.bot:main"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.12"
 "discord.py" = "1.6.0"
-openai = "^0.27.2"
-dacite = "^1.8.0"
+anansi-tags = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
+pre-commit = "^3.7.0"
+ruff = "^0.3.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+target-version = 'py312'
+
+[tool.ruff.lint]
+fixable = ['ALL']
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.format]
+quote-style = 'single'
+indent-style = 'space'
+skip-magic-trailing-comma = false

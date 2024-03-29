@@ -1,4 +1,4 @@
-__all__ = ["TinyDungeons"]
+__all__ = ['TinyDungeons']
 import collections
 
 from random import randint
@@ -7,7 +7,7 @@ from .roll_class import RollClass
 
 
 class TinyDungeons(RollClass):
-    __roll_macro__ = "/td"
+    __roll_macro__ = '/td'
 
     pool: int
     frequency: collections.Counter
@@ -15,7 +15,7 @@ class TinyDungeons(RollClass):
     successes: int
 
     async def roll(self) -> None:
-        if self.dice_str == "help":
+        if self.dice_str == 'help':
             await self._say("""**Tiny Dungeons RPG Controls**
 ```
 /td #     Roll 1-3 dice and calculate successes (5, 6)
@@ -23,12 +23,12 @@ class TinyDungeons(RollClass):
 ```""")
             return
         self.focus = False
-        if self.dice_str[-1] == "f":
+        if self.dice_str[-1] == 'f':
             self.focus = True
-            self.dice_str = self.dice_str.rstrip("f")
+            self.dice_str = self.dice_str.rstrip('f')
         self.pool = int(self.dice_str)
         if self.pool < 1 or self.pool > 3:
-            await self._say("**ERROR**:  Can only have between 1-3 dice! Try again.")
+            await self._say('**ERROR**:  Can only have between 1-3 dice! Try again.')
             return
         self.rolls = sorted([randint(1, 6) for _ in range(self.pool)])
         self.frequency = collections.Counter(self.rolls)

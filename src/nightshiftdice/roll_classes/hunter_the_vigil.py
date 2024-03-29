@@ -1,11 +1,11 @@
-__all__ = ["HunterVigil"]
+__all__ = ['HunterVigil']
 from random import randint
 
 from .roll_class import RollClass
 
 
 class HunterVigil(RollClass):
-    __roll_macro__ = "/h"
+    __roll_macro__ = '/h'
 
     pool: list[int]
     explode: list[int] = [10]
@@ -20,12 +20,12 @@ class HunterVigil(RollClass):
                     roll = roll_list[idx]
                     result += f"{roll}{space if roll < 10 else ' '}"
                 except IndexError:
-                    result += f" {space}"
+                    result += f' {space}'
             result += '\n'
         return result
 
     async def roll(self) -> None:
-        if self.dice_str == "help":
+        if self.dice_str == 'help':
             await self._say("""**Hunter: The Vigil RPG Controls**
 ```
 /h #     Roll # dice and calculate total successes (10's explode)
