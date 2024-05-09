@@ -42,14 +42,17 @@ class PolyDice(RollClass):
         mult_dice = mult_reg.findall(self.dice_str)
         separate_dice = []
         results = []
-        if mult_dice:
-            for _ in range(int(mult_dice[0][0])):
-                separate_dice, results = parse_roll(mult_dice[0][1], separate_dice, results)
-        else:
-            dice_rolls = re.split(r',\w*', self.dice_str)
-            for roll in dice_rolls:
-                separate_dice, results = parse_roll(roll, separate_dice, results)
-        await self._say(f"""Rolling `{self.dice_str.strip()}`:
+        try:
+            if mult_dice:
+                for _ in range(int(mult_dice[0][0])):
+                    separate_dice, results = parse_roll(mult_dice[0][1], separate_dice, results)
+            else:
+                dice_rolls = re.split(r',\w*', self.dice_str)
+                for roll in dice_rolls:
+                    separate_dice, results = parse_roll(roll, separate_dice, results)
+            await self._say(f"""Rolling `{self.dice_str.strip()}`:
 ```{separate_dice if len(separate_dice) > 1 else separate_dice[0]}```
 **Result(s):  `{results if len(results) > 1 else results[0]}`**
 """)
+        except ValueError:
+            await self._say(f'{self.dice_str} is not a valid roll, try again human.')
