@@ -9,3 +9,4 @@ from .tiny_dungeons import TinyDungeons
 from .ryuutama import Ryuutama
 from .hunter_the_vigil import HunterVigil
 from .trophy_gold import TrophyGold
+from .fabula_ultima import FabulaUltima
