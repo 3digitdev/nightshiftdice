@@ -56,7 +56,7 @@ def get_handler_class(message: discord.Message) -> Optional[Union[RollClass, Hel
         if match:
             if rc.__name__ in CACHED_ROLL_CLASSES:
                 c = CACHED_ROLL_CLASSES[rc.__name__]
-                c.cmd_str = match[0]
+                c.dice_str = match[0]
                 c.message = message
             else:
                 c = rc(message, match[0])

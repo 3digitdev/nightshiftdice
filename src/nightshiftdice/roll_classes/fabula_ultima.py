@@ -14,7 +14,7 @@ OPS = {'+': 1, '-': -1, '': 1}
 
 def parse_roll(roll_str: str) -> (List[int], int):
     # This regex will parse 2 dice rolls like "dX+dY" into a tuple of (X, Y)
-    dice_reg = re.compile(r'd(\d+)\+d(\d+)')
+    dice_reg = re.compile(r'1?d(\d+)\s*\+\s*1?d(\d+)')
     all_dice = dice_reg.findall(roll_str)
     actual_dice = []
     for first, second in all_dice:
@@ -23,7 +23,7 @@ def parse_roll(roll_str: str) -> (List[int], int):
         actual_dice.append(randint(1, int(first)))
         actual_dice.append(randint(1, int(second)))
     # This regex will pop any remaining non-dice ('modifiers') into a tuple of (op, modifier)
-    mod_reg = re.compile(r'([+-])(\d+)(?!d)')
+    mod_reg = re.compile(r'\s*([+-])\s*(\d+)(?!d)')
     mod_result = [int(mod) * OPS[op] for op, mod in mod_reg.findall(roll_str)]
     return actual_dice, sum(actual_dice + mod_result)
 
@@ -35,19 +35,24 @@ class FabulaUltima(RollClass):
         if self.dice_str == 'help':
             await self._say("""**Fabula Ultima RPG Controls**
 ```
-/fu dX+dY[+Z]   Roll 2 attribute dice [+ modifier]
+/fu dX+dY[+Z][f]   Roll 2 attribute dice [+ modifier] [f = frenzy]
 ```""")
             return
         try:
             separate_dice, result = parse_roll(self.dice_str)
+            frenzy = self.dice_str.endswith('f')
             highest = max(separate_dice)
             gather = set(separate_dice)
             msg = f"""Rolling `{self.dice_str.strip()}`:
 ```{separate_dice}```
 **Result:  `{result}`**
 **HR: `{highest}`**"""
-            if len(gather) == 1 and gather.pop() >= 6:
-                msg += '\n**💥Crit!💥**'
+            if len(gather) == 1:
+                match = gather.pop()
+                if match >= (2 if frenzy else 6):
+                    msg += '\n**💥Crit!💥**'
+                elif match == 1:
+                    msg += '\n**💀Fumble!💀**'
             await self._say(msg)
         except ValueError:
             await self._say(f'{self.dice_str} is not a valid roll, try again human.')
