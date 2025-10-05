@@ -34,6 +34,7 @@ HELP_MSG = """
 - `/tg help`   for Trophy Gold
 - `/ag help`   for Agon
 - `/fu help`   for Fabula Ultima
+- `/ws help`   for Wildsea
 """
 
 ROLL_CLASSES = RollClass.__subclasses__()
